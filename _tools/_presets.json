@@ -276,5 +276,19 @@
             "KPLIB_arsenal": 0
         },
         "workshopId": ""
+    },
+    {
+        "sourceFolder": "kp_liberation.BMFayshkhabur",
+        "missionName": "kp_liberation",
+        "map": "BMFayshkhabur",
+        "configFile": "KPLIB_config.sqf",
+        "variables": {
+            "KPLIB_preset_blufor": 0,
+            "KPLIB_preset_opfor": 0,
+            "KPLIB_preset_resistance": 0,
+            "KPLIB_preset_civilians": 0,
+            "KPLIB_arsenal": 0
+        },
+        "workshopId": ""
     }
 ]
