@@ -3,6 +3,7 @@
     https://github.com/KillahPotatoes/KP-Liberation
 */
 
+// Define the name of the main FOB/HQ Base
 KPLIB_startbase_name = "HAMMER";
 
 // Vehicle classnames which also function as ACE medical vehicles.
