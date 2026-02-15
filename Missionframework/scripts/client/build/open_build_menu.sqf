@@ -1,4 +1,4 @@
-private [ "_oldbuildtype", "_cfg", "_initindex", "_dialog", "_iscommandant", "_squadname", "_buildpages", "_build_list", "_classnamevar", "_entrytext", "_icon", "_affordable", "_affordable_crew", "_selected_item", "_linked", "_linked_unlocked", "_base_link", "_link_color", "_link_str", "_nearfob", "_actual_fob"];
+private [ "_oldbuildtype", "_cfg", "_initindex", "_dialog", "_iscommandant", "_squadname", "_buildpages", "_build_list", "_classnamevar", "_entrytext", "_icon", "_affordable", "_affordable_crew", "_selected_item", "_linked", "_linked_unlocked", "_base_link", "_link_color", "_link_str", "_nearfob", "_actual_fob", "_isStartBase"];
 
 if (([ getpos player , 500 , GRLIB_side_enemy ] call KPLIB_fnc_getUnitsCount ) > 4 ) exitWith { hint localize "STR_BUILD_ENEMIES_NEARBY";};
 
@@ -35,6 +35,7 @@ localize "STR_BUILD8"
 
 _nearfob = [] call KPLIB_fnc_getNearestFob;
 _actual_fob = KP_liberation_fob_resources select {((_x select 0) distance _nearfob) < GRLIB_fob_range};
+_isStartBase = _nearfob isEqualTo (getMarkerPos "startbase_marker");
 
 while {dialog && alive player && (dobuild == 0 || buildtype == 1)} do {
     _build_list = KPLIB_buildList select buildtype;
@@ -43,13 +44,22 @@ while {dialog && alive player && (dobuild == 0 || buildtype == 1)} do {
         synchro_done = false;
         _oldbuildtype = buildtype;
         _actual_fob = KP_liberation_fob_resources select {((_x select 0) distance _nearfob) < GRLIB_fob_range};
+        _isStartBase = _nearfob isEqualTo (getMarkerPos "startbase_marker");
 
         lbClear 110;
         {
             ctrlSetText [151, _buildpages select ( buildtype - 1)];
             if (buildtype != 8) then {
                 _classnamevar = (_x select 0);
+
+                _customName = (_x select 4);
+
+
                 _entrytext = getText (_cfg >> _classnamevar >> "displayName");
+
+                if (!isNil { _customName }) then {
+                    _entrytext = _customName;
+                };
 
                 switch (_classnamevar) do {
                     case FOB_box_typename: {_entrytext = localize "STR_FOBBOX";};
