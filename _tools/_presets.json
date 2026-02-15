@@ -132,6 +132,21 @@
         "workshopId": "1816045062"
     },
     {
+        "sourceFolder": "kp_liberation.pja308",
+        "missionName": "kp_liberation",
+        "map": "pja308",
+        "mapDisplay": "Gunkizli",
+        "configFile": "kp_liberation_config.sqf",
+        "variables": {
+            "KP_liberation_preset_blufor": 7,
+            "KP_liberation_preset_opfor": 8,
+            "KP_liberation_preset_resistance": 5,
+            "KP_liberation_preset_civilians": 4,
+            "KP_liberation_arsenal": 0
+        },
+        "workshopId": ""
+    },
+    {
         "sourceFolder": "kp_liberation.pja310",
         "missionName": "kp_liberation",
         "map": "pja310",
@@ -257,6 +272,21 @@
         "variables": {
             "KP_liberation_preset_blufor": 8,
             "KP_liberation_preset_opfor": 3,
+            "KP_liberation_preset_resistance": 3,
+            "KP_liberation_preset_civilians": 2,
+            "KP_liberation_arsenal": 0
+        },
+        "workshopId": ""
+    },
+    {
+        "sourceFolder": "kp_liberation.Gulfcoast",
+        "missionName": "kp_liberation",
+        "map": "Gulfcoast",
+        "mapDisplay": "Gulf Coast",
+        "configFile": "kp_liberation_config.sqf",
+        "variables": {
+            "KP_liberation_preset_blufor": 7,
+            "KP_liberation_preset_opfor": 4,
             "KP_liberation_preset_resistance": 3,
             "KP_liberation_preset_civilians": 2,
             "KP_liberation_arsenal": 0
