@@ -66,7 +66,7 @@ private ["_fobPos", "_fobObjects", "_grpUnits", "_fobMines"];
         typeOf _x,
         _x mineDetectedBy GRLIB_side_friendly
     ]});
-} forEach GRLIB_all_fobs;
+} forEach (GRLIB_all_fobs + [getMarkerPos "startbase_marker"]);
 
 // Save all fetched objects
 private ["_savedPos", "_savedVecDir", "_savedVecUp", "_class", "_hasCrew"];

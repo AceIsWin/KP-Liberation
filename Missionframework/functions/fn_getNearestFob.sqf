@@ -19,10 +19,6 @@ params [
     ["_pos", getPos player, [[]], [2, 3]]
 ];
 
-if !(GRLIB_all_fobs isEqualTo []) then {
-    private _fobs = GRLIB_all_fobs apply {[_pos distance2d _x, _x]};
+private _fobs = (GRLIB_all_fobs + [getMarkerPos "startbase_marker"]) apply {[_pos distance2d _x, _x]};
     _fobs sort true;
     (_fobs select 0) select 1
-} else {
-    []
-};

@@ -56,7 +56,7 @@ while {true} do {
         _local_fuel_global = _local_fuel_global + _fuelValue;
         _local_heli_slots = _local_heli_slots + _heliSlots;
         _local_plane_slots = _local_plane_slots + _planeSlots;
-    } forEach GRLIB_all_fobs;
+    } forEach (GRLIB_all_fobs + [getMarkerPos "startbase_marker"]);
 
     {
         if ( _x in sectors_capture ) then {

@@ -1,6 +1,7 @@
 @echo off
+title KP Liberation Build Tool
 
-rem Check that https://nodejs.org/en/download/ exists before continuing
+rem Check that Node.js is installed
 where /q node
 if ERRORLEVEL 1 (
     echo node is missing. Ensure it is installed. It can be downloaded from:
@@ -9,14 +10,6 @@ if ERRORLEVEL 1 (
     exit /b
 )
 
-rem CD into build tool directory
-cd %~dp0_tools
-
-rem Install dependencies and build missions
-call npm install --loglevel=error
-call npx gulp
-
-echo.
-
+node "%~dp0build.js"
 pause
 exit /b
