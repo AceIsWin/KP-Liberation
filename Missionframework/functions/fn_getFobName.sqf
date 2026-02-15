@@ -19,4 +19,8 @@ params [
     ["_fob", [0, 0, 0], [[]], [2, 3]]
 ];
 
+
+if(_fob isEqualTo (getMarkerPos "startbase_marker")) exitWith {
+    KPLIB_startbase_name
+};
 military_alphabet param [GRLIB_all_fobs findIf {(_x distance2d _fob) < 100}, ""]

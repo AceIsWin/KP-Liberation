@@ -23,7 +23,8 @@ waitUntil {introDone};
 waitUntil {!isNil "cinematic_camera_stop"};
 waitUntil {cinematic_camera_stop};
 
-private _basenamestr = "Operation Base";
+private _basenamestr    = "FOB Hammer";
+
 
 KP_liberation_respawn_time = time;
 KP_liberation_respawn_mobile_done = false;

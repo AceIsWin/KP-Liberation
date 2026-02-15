@@ -22,15 +22,13 @@ private _fobName = "";
 
 while {true} do {
     // FOB distance, name and position
-    if !(GRLIB_all_fobs isEqualTo []) then {
+
+
         _fobPos = [] call KPLIB_fnc_getNearestFob;
         _fobDist = player distance2d _fobPos;
+
         _fobName = ["", ["FOB", [_fobPos] call KPLIB_fnc_getFobName] joinString " "] select (_fobDist < GRLIB_fob_range);
-    } else {
-        _fobPos = [0, 0, 0];
-        _fobDist = 99999;
-        _fobName = "";
-    };
+
     // TODO more self explanatory names, KPLIB_nearestFobDist, KPLIB_currentFobName, KPLIB_nearestFobPos
     player setVariable ["KPLIB_fobDist", _fobDist];
     player setVariable ["KPLIB_fobName", _fobName];
