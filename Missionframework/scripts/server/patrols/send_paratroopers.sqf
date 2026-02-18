@@ -127,14 +127,5 @@ _waypoint setWaypointType "SAD";
 _waypoint = _pilot_group addWaypoint [_targetpos, 200];
 _waypoint setWaypointType "SAD";
 _pilot_group setCurrentWaypoint [_pilot_group, 1];
-_waypoint = _para_group addWaypoint [_targetpos, 100];
-_waypoint setWaypointType "SAD";
-_waypoint = _para_group addWaypoint [_targetpos, 100];
-_waypoint setWaypointType "SAD";
-_waypoint = _para_group addWaypoint [_targetpos, 100];
-_waypoint setWaypointType "SAD";
-_waypoint = _para_group addWaypoint [_targetpos, 100];
-_waypoint setWaypointType "SAD";
-_waypoint = _para_group addWaypoint [_targetpos, 100];
-_waypoint setWaypointType "SAD";
-_pilot_group setCurrentWaypoint [_para_group, 1];
+// LAMBS: Paratroopers rush the target position after landing
+[_para_group, _targetpos, 50] call KPLIB_fnc_rush;

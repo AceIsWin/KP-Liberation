@@ -196,24 +196,29 @@ if ((!(_sector in blufor_sectors)) && (([markerPos _sector, [_opforcount] call K
 
     _managed_units = _managed_units + ([_sectorpos] call KPLIB_fnc_spawnMilitaryPostSquad);
 
+    // LAMBS: Assign varied tactical behaviors to sector squads for more dynamic defense
+    // Squad 1 - standard defense patrol (creep when idle, hunt on contact)
     if (count _squad1 > 0) then {
         _grp = [_sector, _squad1] call KPLIB_fnc_spawnRegularSquad;
         [_grp, _sectorpos] spawn add_defense_waypoints;
         _managed_units = _managed_units + (units _grp);
     };
 
+    // Squad 2 - garrison nearby buildings for defensive positions
     if (count _squad2 > 0) then {
         _grp = [_sector, _squad2] call KPLIB_fnc_spawnRegularSquad;
-        [_grp, _sectorpos] spawn add_defense_waypoints;
+        [_grp, _sectorpos, _building_range] call KPLIB_fnc_garrison;
         _managed_units = _managed_units + (units _grp);
     };
 
+    // Squad 3 - creep patrol providing outer perimeter security
     if (count _squad3 > 0) then {
         _grp = [_sector, _squad3] call KPLIB_fnc_spawnRegularSquad;
-        [_grp, _sectorpos] spawn add_defense_waypoints;
+        [_grp, _sectorpos, 75] call KPLIB_fnc_creep;
         _managed_units = _managed_units + (units _grp);
     };
 
+    // Squad 4 - hunt behavior for aggressive counter-attack capability
     if (count _squad4 > 0) then {
         _grp = [_sector, _squad4] call KPLIB_fnc_spawnRegularSquad;
         [_grp, _sectorpos] spawn add_defense_waypoints;

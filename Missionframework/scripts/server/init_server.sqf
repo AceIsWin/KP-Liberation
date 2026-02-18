@@ -126,3 +126,32 @@ execVM "scripts\server\offloading\group_diag.sqf";
 if (KP_liberation_restart > 0) then {
     execVM "scripts\server\game\server_restart.sqf";
 };
+
+// LAMBS Danger FSM - Register artillery units for fire support if LAMBS is loaded
+if (!isNil "lambs_wp_fnc_taskArtilleryRegister") then {
+    [] spawn {
+        waitUntil {sleep 10; !isNil "blufor_sectors"};
+        // Continuously monitor and register any opfor artillery-capable vehicles
+        while {GRLIB_endgame == 0} do {
+            {
+                private _veh = _x;
+                if (side _veh == GRLIB_side_enemy && {alive _veh} && {!(_veh getVariable ["KPLIB_intArtilleryRegistered", false])}) then {
+                    if (getNumber (configFile >> "CfgVehicles" >> typeOf _veh >> "artilleryScanner") > 0) then {
+                        [_veh] call lambs_wp_fnc_taskArtilleryRegister;
+                        _veh setVariable ["KPLIB_intArtilleryRegistered", true];
+                        [format ["LAMBS Artillery: Registered %1 at %2", typeOf _veh, getPos _veh], "LAMBS"] call KPLIB_fnc_log;
+                    };
+                };
+            } forEach vehicles;
+            sleep 60;
+        };
+    };
+    ["LAMBS Danger FSM: Artillery registration system initialized", "LAMBS"] call KPLIB_fnc_log;
+};
+
+// LAMBS Danger FSM - Log integration status
+if (!isNil "lambs_danger_fnc_findClosestTarget") then {
+    ["LAMBS Danger FSM: Core danger functions detected - Enhanced AI behaviors active", "LAMBS"] call KPLIB_fnc_log;
+} else {
+    ["LAMBS Danger FSM: Not detected - Using vanilla AI fallbacks", "LAMBS"] call KPLIB_fnc_log;
+};

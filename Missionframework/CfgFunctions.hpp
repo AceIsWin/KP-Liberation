@@ -84,6 +84,15 @@ class KPLIB {
         class spawnRegularSquad         {};
         class spawnVehicle              {};
         class swapInventory             {};
+
+        // LAMBS Danger FSM integration
+        class findClosestTarget         {};     // [unit, range] call KPLIB_fnc_findClosestTarget
+        class findBuildings             {};     // [pos, range, minPositions] call KPLIB_fnc_findBuildings
+        class doUgl                     {};     // [unit, targetPos] call KPLIB_fnc_doUgl
+        class creep                     {};     // [grp, targetPos, range] call KPLIB_fnc_creep
+        class hunt                      {};     // [grp, targetPos, range] call KPLIB_fnc_hunt
+        class rush                      {};     // [grp, targetPos, range] call KPLIB_fnc_rush
+        class garrison                  {};     // [grp, targetPos, range] call KPLIB_fnc_garrison
     };
     class functions_curator {
         file = "functions\curator";

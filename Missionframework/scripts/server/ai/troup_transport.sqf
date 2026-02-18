@@ -70,5 +70,6 @@ if ((alive _transVeh) && (alive (driver _transVeh))) then {
 
     sleep 10;
 
-    [_infGrp] spawn battlegroup_ai;
+    // LAMBS: Unloaded troops immediately hunt toward the objective
+    [_infGrp, _objPos, 100] call KPLIB_fnc_hunt;
 };

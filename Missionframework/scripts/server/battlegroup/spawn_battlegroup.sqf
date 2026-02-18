@@ -31,10 +31,20 @@ if !(_spawn_marker isEqualTo "") then {
 
         // Create infantry groups with up to 8 units per squad
         private _grp = createGroup [GRLIB_side_enemy, true];
+        private _grpIndex = 0;
         for "_i" from 0 to (_target_size - 1) do {
             if (_i > 0 && {(_i % 8) isEqualTo 0}) then {
+                // LAMBS: Alternate tactics between infantry squads for varied assault
+                if (_grpIndex % 2 == 0) then {
+                    [_grp] spawn battlegroup_ai;
+                } else {
+                    // Every other squad uses rush for aggressive flanking assault
+                    private _objPos = [markerPos _spawn_marker] call KPLIB_fnc_getNearestBluforObjective;
+                    [_grp, _objPos, 100] call KPLIB_fnc_rush;
+                };
                 _bg_groups pushBack _grp;
                 _grp = createGroup [GRLIB_side_enemy, true];
+                _grpIndex = _grpIndex + 1;
             };
             [selectRandom _infClasses, markerPos _spawn_marker, _grp] call KPLIB_fnc_createManagedUnit;
         };

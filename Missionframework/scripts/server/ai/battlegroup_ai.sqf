@@ -12,6 +12,7 @@ private _objPos = [getPos (leader _grp)] call KPLIB_fnc_getNearestBluforObjectiv
 [_objPos] remoteExec ["remote_call_incoming"];
 
 private _startpos = getPos (leader _grp);
+private _is_infantry = (vehicle (leader _grp) == (leader _grp));
 
 private _waypoint = [];
 while {((getPos (leader _grp)) distance _startpos) < 100} do {
@@ -21,21 +22,32 @@ while {((getPos (leader _grp)) distance _startpos) < 100} do {
 
     _startpos = getPos (leader _grp);
 
-    _waypoint = _grp addWaypoint [_objPos, 100];
-    _waypoint setWaypointType "MOVE";
-    _waypoint setWaypointSpeed "NORMAL";
-    _waypoint setWaypointBehaviour "AWARE";
-    _waypoint setWaypointCombatMode "YELLOW";
-    _waypoint setWaypointCompletionRadius 30;
+    if (_is_infantry) then {
+        // LAMBS: Infantry battlegroups use hunt behavior - flanking and fire-and-movement
+        // Randomly assign rush for high-aggression assaults when readiness is high
+        if (combat_readiness > 80 && {(random 100) > 50}) then {
+            [_grp, _objPos, 100] call KPLIB_fnc_rush;
+        } else {
+            [_grp, _objPos, 100] call KPLIB_fnc_hunt;
+        };
+    } else {
+        // Vehicle battlegroups keep vanilla waypoints for vehicle pathing reliability
+        _waypoint = _grp addWaypoint [_objPos, 100];
+        _waypoint setWaypointType "MOVE";
+        _waypoint setWaypointSpeed "NORMAL";
+        _waypoint setWaypointBehaviour "AWARE";
+        _waypoint setWaypointCombatMode "YELLOW";
+        _waypoint setWaypointCompletionRadius 30;
 
-    _waypoint = _grp addWaypoint [_objPos, 100];
-    _waypoint setWaypointType "SAD";
-    _waypoint = _grp addWaypoint [_objPos, 100];
-    _waypoint setWaypointType "SAD";
-    _waypoint = _grp addWaypoint [_objPos, 100];
-    _waypoint setWaypointType "SAD";
-    _waypoint = _grp addWaypoint [_objPos, 100];
-    _waypoint setWaypointType "CYCLE";
+        _waypoint = _grp addWaypoint [_objPos, 100];
+        _waypoint setWaypointType "SAD";
+        _waypoint = _grp addWaypoint [_objPos, 100];
+        _waypoint setWaypointType "SAD";
+        _waypoint = _grp addWaypoint [_objPos, 100];
+        _waypoint setWaypointType "SAD";
+        _waypoint = _grp addWaypoint [_objPos, 100];
+        _waypoint setWaypointType "CYCLE";
+    };
 
     sleep 90;
 };
