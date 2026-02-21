@@ -11,8 +11,10 @@
         or whether init has already finished (KPLIB_initServer is set, which means the
         autoload path ran and we can exit immediately).
 
-        If a dialog is required, non-admin players see a waiting hint. The admin machine
-        opens the KPPL_prelaunch_dialog after polling until playerIsAdmin becomes true.
+        Two admin paths:
+        1. Non-dedicated (LAN) host — isServer && hasInterface. The host IS the server so
+           there is no admin login required. Dialog opens immediately.
+        2. Dedicated server client — polls playerIsAdmin until the player uses #login.
 
     Parameter(s):
         None
@@ -38,12 +40,26 @@ if (!isNil "KPLIB_initServer") exitWith {};
 // If no dialog is needed (shouldn't happen, but guard anyway), exit.
 if (!KPPL_waitingForAdmin) exitWith {};
 
-// Show a waiting hint for all players while admin configures
+hint "";
+
+// ── Non-dedicated (LAN) host fast-path ────────────────────────────────────────
+// This machine IS the server (isServer && hasInterface). No #login poll needed.
+if (isServer) exitWith {
+    diag_log "[KPPL] Non-dedicated host — opening pre-launch dialog immediately.";
+    private _myId = owner player;
+    [_myId] remoteExec ["KPPL_fnc_registerAdminMachine", 2];
+    createDialog "KPPL_prelaunch_dialog";
+    waitUntil {
+        sleep 0.5;
+        (!isNil "KPPL_prelaunch_done"      && KPPL_prelaunch_done)
+        || (!isNil "KPPL_prelaunch_cancelled" && KPPL_prelaunch_cancelled)
+    };
+};
+
+// ── Dedicated-server client path ──────────────────────────────────────────────
+// Show a waiting hint while polling for admin login via #login password.
 hint "KP Liberation\n\nWaiting for server administrator\nto configure the mission...";
 
-// ── Admin detection ───────────────────────────────────────────────────────────
-// Poll until either this client becomes admin or KPPL_prelaunch_done is set
-// (meaning the dialog was completed or the autoload finished on another machine).
 private _timeout = diag_tickTime + 300; // 5-minute poll limit
 waitUntil {
     sleep 1;
@@ -60,7 +76,7 @@ if (!isNil "KPLIB_initServer"
     hint "";
 };
 
-// Timed out and not admin — show a static waiting hint and wait for release
+// Timed out and not admin — wait silently for release
 if (!playerIsAdmin) exitWith {
     waitUntil {
         sleep 1;
@@ -71,18 +87,15 @@ if (!playerIsAdmin) exitWith {
     hint "";
 };
 
-// ── Admin path: open the dialog ───────────────────────────────────────────────
+// ── Admin logged in via #login: open the dialog ───────────────────────────────
 hint "";
-diag_log "[KPPL] Admin detected — opening pre-launch configuration dialog.";
+diag_log "[KPPL] Admin detected (#login) — opening pre-launch configuration dialog.";
 
-// Record the admin's machine ID so hooks can detect admin disconnect
 private _myId = owner player;
 [_myId] remoteExec ["KPPL_fnc_registerAdminMachine", 2];
 
-// Open the dialog
 createDialog "KPPL_prelaunch_dialog";
 
-// Wait for dialog to close (either Launch or Cancel was clicked)
 waitUntil {
     sleep 0.5;
     (!isNil "KPPL_prelaunch_done" && KPPL_prelaunch_done)
