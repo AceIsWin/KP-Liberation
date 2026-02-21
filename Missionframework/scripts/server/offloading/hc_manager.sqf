@@ -1,3 +1,6 @@
+// Wait for pre-launch config to complete before initialising HC AI management
+waitUntil { sleep 1; !isNil "KPPL_prelaunch_done" && { KPPL_prelaunch_done } };
+
 add_civ_waypoints = compileFinal preprocessFileLineNumbers "scripts\server\ai\add_civ_waypoints.sqf";
 add_defense_waypoints = compileFinal preprocessFileLineNumbers "scripts\server\ai\add_defense_waypoints.sqf";
 battlegroup_ai = compileFinal preprocessFileLineNumbers "scripts\server\ai\battlegroup_ai.sqf";

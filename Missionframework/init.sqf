@@ -9,9 +9,62 @@ enableSaving [ false, false ];
 if (isDedicated) then {debug_source = "Server";} else {debug_source = name player;};
 
 [] call KPLIB_fnc_initSectors;
+
+// === KPPL PRE-LAUNCH GATE (server only, before config loading) ===
+if (isServer) then {
+    [] call compileFinal preprocessFileLineNumbers "scripts\prelaunch\prelaunch_hooks.sqf";
+    waitUntil {
+        sleep 1;
+        !isNil "KPPL_prelaunch_done" && {
+            KPPL_prelaunch_done || KPPL_prelaunch_cancelled ||
+            // Admin disconnected mid-dialog — fall back to last save if one exists
+            (
+                !isNil "KPPL_adminMachineId" &&
+                { KPPL_adminMachineId > 0 } &&
+                { !(KPPL_adminMachineId in (allPlayers apply { owner _x })) } &&
+                { profileNamespace getVariable [format ["KPPL_LASTLAUNCHED_%1", toUpper worldName], ""] != "" }
+            )
+        }
+    };
+    // Admin disconnect fallback — apply last launched save
+    if (!KPPL_prelaunch_done && !KPPL_prelaunch_cancelled) then {
+        diag_log "[KPPL] Admin disconnected during dialog. Falling back to last launched save.";
+        private _fallbackSave = profileNamespace getVariable [format ["KPPL_LASTLAUNCHED_%1", toUpper worldName], ""];
+        if (_fallbackSave != "") then {
+            [_fallbackSave] call KPPL_fnc_applySlotByName;
+            KPPL_autoloaded = true; publicVariable "KPPL_autoloaded";
+            KPPL_prelaunch_done = true; publicVariable "KPPL_prelaunch_done";
+        } else {
+            KPPL_prelaunch_cancelled = true; publicVariable "KPPL_prelaunch_cancelled";
+        };
+    };
+    // On cancel: end the mission on all machines
+    if (KPPL_prelaunch_cancelled) then {
+        diag_log "[KPPL] Prelaunch cancelled. Ending mission.";
+        ["end1", true] remoteExec ["BIS_fnc_endMission", 0];
+        sleep 10;
+    };
+};
+// === END KPPL PRE-LAUNCH GATE ===
+
 if (!isServer) then {waitUntil {!isNil "KPLIB_initServer"};};
 [] call compileFinal preprocessFileLineNumbers "scripts\shared\fetch_params.sqf";
+
+// Apply prelaunch unitcap override (overrides lobby param value set by fetch_params.sqf)
+if (!isNil "KPPL_unitcap_override") then { GRLIB_unitcap = KPPL_unitcap_override; };
+
 [] call compileFinal preprocessFileLineNumbers "kp_liberation_config.sqf";
+
+// Apply prelaunch faction preset overrides (kp_liberation_config.sqf resets these to defaults)
+if (!isNil "KPPL_preset_blufor") then {
+    KP_liberation_preset_blufor     = KPPL_preset_blufor;
+    KP_liberation_preset_opfor      = KPPL_preset_opfor;
+    KP_liberation_preset_resistance = KPPL_preset_resistance;
+    KP_liberation_preset_civilians  = KPPL_preset_civilians;
+};
+if (!isNil "KPPL_arsenal") then { KP_liberation_arsenal = KPPL_arsenal; };
+if (!isNil "KPPL_save_key_override") then { GRLIB_save_key = KPPL_save_key_override; };
+
 [] call compileFinal preprocessFileLineNumbers "presets\init_presets.sqf";
 [] call compileFinal preprocessFileLineNumbers "kp_objectInits.sqf";
 
