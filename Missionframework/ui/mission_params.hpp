@@ -1,11 +1,4 @@
 class Params {
-    class KPPL_param_force_config {
-        title       = "Pre-launch config screen";
-        description = "Force the settings UI to open on this restart even if auto-load is enabled. Use when you need to change faction or settings without editing config files.";
-        values[]    = {0, 1};
-        texts[]     = {"Auto (respect saved preference)", "Force config screen this restart"};
-        default     = 0;
-    };
     class LoadSaveParams {
         title = $STR_PARAMS_LOADSAVEPARAMS;
         values[] = {0, 1, 2};
