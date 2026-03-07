@@ -1121,6 +1121,35 @@ KP_liberation_small_storage_positions = [
     [2.4502,-1.79883,0.6]
 ];
 
+// ==================== BATTLESPACE AI SYSTEM ====================
+// Also see GRLIB_battlegroup_cap for when Battlegroup units may spawn
+BATTLESPACE_UNIT_CAP = 350;                  // Max concurrent enemy units managed by Battlespace AI
+
+// Depth and Length in actuality adds up to 2x the listed value
+// Length / Depth should be a multiple of the Gap
+BATTLESPACE_AT_MINE_LENGTH = 50;
+BATTLESPACE_AT_MINE_DEPTH = 20;
+BATTLESPACE_AT_MINE_GAP = 10;
+
+BATTLESPACE_AP_MINE_LENGTH = 96;
+BATTLESPACE_AP_MINE_DEPTH = 40;
+BATTLESPACE_AP_MINE_GAP = 8;
+
+// Distance from the current average position of a cluster where a blufor player will be added to the cluster
+BLUFOR_CLUSTER_DISTANCE = 200;
+
+// NOTE: Make sure GRLIB_sector_size is consistent - that controls how far a sector activates at all
+BATTLESPACE_UNIT_PROC_RANGE = 1175;          // Spawn range for infantry/vehicles
+BATTLESPACE_MINEFIELD_PROC_RANGE = 1125;     // Minefield activation range
+BATTLESPACE_AA_PROC_RANGE = 2500;            // Anti-air spawn range
+BATTLESPACE_AIR_PROC_RANGE = 1500;           // Helicopter/CAS spawn range
+
+// How many units should be in each OPFOR squad
+BATTLESPACE_SQUAD_SIZE = 7;
+
+// Used for development to simulate a different player count for battlespace AI spawns (-1 = disabled)
+DEBUG_PLAYER_COUNT_OVERRIDE = -1;
+
 // DO NOT CHANGE (unless you know what you are doing).
 GRLIB_endgame = 0;
 KP_liberation_production_interval = ceil (KP_liberation_production_interval / GRLIB_resources_multiplier);
