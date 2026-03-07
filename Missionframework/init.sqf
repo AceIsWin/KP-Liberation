@@ -15,6 +15,9 @@ if (!isServer) then {waitUntil {!isNil "KPLIB_initServer"};};
 [] call compileFinal preprocessFileLineNumbers "presets\init_presets.sqf";
 [] call compileFinal preprocessFileLineNumbers "kp_objectInits.sqf";
 
+// Battlespace AI System - compile on all machines (server + clients) for Zeus visualization support
+[] call compileFinal preprocessFileLineNumbers "scripts\server\battlespace_ai\index.sqf";
+
 // Activate selected player menu. If CBA isn't loaded -> fallback to GREUH
 if (KPPLM_CBA && KP_liberation_playermenu) then {
     [] call KPPLM_fnc_postInit;

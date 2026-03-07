@@ -41,7 +41,7 @@ execVM "scripts\server\base\startvehicle_spawn.sqf";
 [] call KPLIB_fnc_createSuppModules;
 execVM "scripts\server\battlegroup\counter_battlegroup.sqf";
 execVM "scripts\server\battlegroup\random_battlegroups.sqf";
-execVM "scripts\server\battlegroup\readiness_increase.sqf";
+// execVM "scripts\server\battlegroup\readiness_increase.sqf"; // Replaced by Battlespace AI System
 execVM "scripts\server\game\apply_default_permissions.sqf";
 execVM "scripts\server\game\cleanup_vehicles.sqf";
 if (!KP_liberation_fog_param) then {execVM "scripts\server\game\fucking_set_fog.sqf";};
@@ -54,8 +54,8 @@ execVM "scripts\server\game\synchronise_vars.sqf";
 execVM "scripts\server\game\synchronise_eco.sqf";
 execVM "scripts\server\game\zeus_synchro.sqf";
 execVM "scripts\server\offloading\show_fps.sqf";
-execVM "scripts\server\patrols\civilian_patrols.sqf";
-execVM "scripts\server\patrols\manage_patrols.sqf";
+// execVM "scripts\server\patrols\civilian_patrols.sqf"; // Replaced by Battlespace AI System
+// execVM "scripts\server\patrols\manage_patrols.sqf"; // Replaced by Battlespace AI System
 execVM "scripts\server\patrols\reinforcements_resetter.sqf";
 if (KP_liberation_ailogistics) then {execVM "scripts\server\resources\manage_logistics.sqf";};
 execVM "scripts\server\resources\manage_resources.sqf";
